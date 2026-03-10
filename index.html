@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CicloStudy CBMRR — Conquiste sua vaga de Bombeiro</title>
+<meta name="description" content="O app que organiza seu estudo para o concurso CBMRR 2026. Configure em 5 minutos. R$17 apenas no lançamento.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ── RESET & VARS ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --red:      #E8272A;
+    --red-dark: #9A0C0E;
+    --red-bg:   #1A0404;
+    --gold:     #C8960C;
+    --gold-clr: #FFD060;
+    --green:    #00C46A;
+    --blue:     #3B82F6;
+    --black:    #080809;
+    --surface:  #111116;
+    --surf2:    #18181F;
+    --surf3:    #20202A;
+    --border:   #2A2A38;
+    --white:    #F0F0F8;
+    --gray1:    #C0C0D8;
+    --gray2:    #808098;
+    --gray3:    #404058;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── UTILITÁRIOS ── */
+  .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+  .tag {
+    display: inline-block;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+  .tag-red   { background: var(--red-bg); color: var(--red); border: 1px solid var(--red); }
+  .tag-gold  { background: #1A1400; color: var(--gold-clr); border: 1px solid var(--gold); }
+  .tag-green { background: #001A0C; color: var(--green); border: 1px solid var(--green); }
+
+  /* ── FAIXA TOPO ── */
+  .top-bar {
+    background: var(--red);
+    padding: 8px 20px;
+    text-align: center;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: .08em;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .top-bar span { color: var(--gold-clr); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 60px 0 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; left: -60px;
+    width: 320px; height: 320px;
+    background: radial-gradient(circle, rgba(232,39,42,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(44px, 11vw, 72px);
+    line-height: .95;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .hero-title .line-red  { color: var(--red); display: block; }
+  .hero-title .line-dim  { color: var(--gray1); }
+
+  .hero-sub {
+    font-size: 16px;
+    color: var(--gray1);
+    max-width: 500px;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+
+  /* stats em linha */
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .stat-box {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 10px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 26px;
+    display: block;
+  }
+  .stat-lbl {
+    font-size: 10px;
+    color: var(--gray2);
+    line-height: 1.3;
+    display: block;
+    margin-top: 2px;
+  }
+
+  /* CTA principal */
+  .cta-main {
+    display: block;
+    width: 100%;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 20px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    padding: 18px 24px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+    box-shadow: 0 4px 32px rgba(232,39,42,.35);
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,.1) 0%, transparent 60%);
+  }
+  .cta-main:hover { transform: translateY(-2px); box-shadow: 0 8px 40px rgba(232,39,42,.5); }
+  .cta-main:active { transform: translateY(0); }
+
+  .cta-sub {
+    text-align: center;
+    font-size: 12px;
+    color: var(--gray2);
+    margin-top: 10px;
+  }
+  .cta-sub span { color: var(--gold-clr); font-weight: 600; }
+
+  /* ── DIVISOR ── */
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* ── SECAO GENÉRICA ── */
+  section { padding: 48px 0; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.05;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .section-sub {
+    font-size: 15px;
+    color: var(--gray1);
+    margin-bottom: 28px;
+    line-height: 1.6;
+  }
+
+  /* ── PROBLEMA ── */
+  .problem-list { display: flex; flex-direction: column; gap: 10px; }
+  .problem-item {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .problem-icon {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 16px;
+    color: var(--red);
+    min-width: 22px;
+    margin-top: 1px;
+  }
+  .problem-text { font-size: 14px; color: var(--gray1); line-height: 1.5; }
+
+  /* ── SOLUCAO — destaque visual ── */
+  .solution-card {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 10px;
+  }
+  .solution-header {
+    background: var(--red);
+    padding: 14px 18px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .solution-body { padding: 16px 18px; }
+  .solution-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+  .step-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .step-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--red);
+    min-width: 26px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+  .step-content strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .step-content p { font-size: 13px; color: var(--gray2); line-height: 1.5; }
+
+  /* ── O QUE VOCÊ LEVA ── */
+  .entrega-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .entrega-card {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 14px;
+    position: relative;
+    overflow: hidden;
+  }
+  .entrega-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 3px;
+  }
+  .entrega-card.red::before  { background: var(--red); }
+  .entrega-card.gold::before { background: var(--gold-clr); }
+  .entrega-card.green::before{ background: var(--green); }
+  .entrega-card.blue::before { background: var(--blue); }
+
+  .entrega-icon { font-size: 22px; margin-bottom: 8px; }
+  .entrega-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: var(--white);
+  }
+  .entrega-desc { font-size: 12px; color: var(--gray2); line-height: 1.5; }
+
+  /* ── MATERIAS ── */
+  .materias-list { display: flex; flex-direction: column; gap: 6px; }
+  .materia-row {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 10px;
+    background: var(--surf2);
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .mat-nome { font-size: 14px; font-weight: 500; color: var(--white); }
+  .mat-bar-wrap {
+    width: 80px;
+    height: 5px;
+    background: var(--surf3);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .mat-bar { height: 100%; border-radius: 3px; }
+  .mat-pct {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    min-width: 34px;
+    text-align: right;
+  }
+
+  /* ── PROVA SOCIAL ── */
+  .depoimento-nota {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .nota-numero {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--gold-clr);
+    line-height: 1;
+  }
+  .nota-estrelas { font-size: 22px; margin: 6px 0; }
+  .nota-sub { font-size: 12px; color: var(--gray2); }
+
+  .depos-grid { display: flex; flex-direction: column; gap: 10px; }
+  .depoi-card {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+  }
+  .depoi-text { font-size: 14px; color: var(--gray1); line-height: 1.6; font-style: italic; margin-bottom: 8px; }
+  .depoi-autor {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--red);
+    text-transform: uppercase;
+  }
+
+  /* ── PRECO ── */
+  .price-block {
+    background: var(--red-bg);
+    border: 2px solid var(--red);
+    border-radius: 16px;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .price-block::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(232,39,42,.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .price-badge {
+    display: inline-block;
+    background: var(--red);
+    color: #fff;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+  }
+
+  .price-de {
+    font-size: 14px;
+    color: var(--gray2);
+    text-decoration: line-through;
+    margin-bottom: 4px;
+  }
+  .price-por { font-size: 13px; color: var(--gray2); margin-bottom: 4px; }
+  .price-valor {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 72px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .price-valor sup { font-size: 28px; vertical-align: super; }
+  .price-aviso { font-size: 13px; color: var(--gold-clr); font-weight: 600; margin-bottom: 24px; }
+
+  .garantia-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0,196,106,.08);
+    border: 1px solid rgba(0,196,106,.3);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 16px;
+  }
+  .garantia-icon { font-size: 22px; }
+  .garantia-text { font-size: 13px; color: var(--gray1); text-align: left; line-height: 1.4; }
+  .garantia-text strong { color: var(--green); display: block; }
+
+  /* ── FAQ ── */
+  .faq-list { display: flex; flex-direction: column; gap: 6px; }
+  .faq-item {
+    background: var(--surf2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px;
+    text-align: left;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--white);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+  .faq-q:hover { color: var(--red); }
+  .faq-arrow { font-size: 16px; transition: transform .2s; color: var(--red); flex-shrink: 0; }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-a {
+    display: none;
+    padding: 0 16px 16px;
+    font-size: 13px;
+    color: var(--gray1);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+  .faq-item.open .faq-a { display: block; }
+
+  /* ── CTA FINAL ── */
+  .cta-final {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 56px 0 48px;
+    text-align: center;
+  }
+  .cta-final-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(32px, 8vw, 52px);
+    text-transform: uppercase;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .cta-final-title span { color: var(--red); }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--black);
+    border-top: 1px solid var(--border);
+    padding: 24px 20px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--gray3);
+    line-height: 1.8;
+  }
+
+  /* ── ANIMACOES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-title  { animation: fadeUp .6s ease both; }
+  .hero-sub    { animation: fadeUp .6s .1s ease both; }
+  .hero-stats  { animation: fadeUp .6s .2s ease both; }
+  .cta-main    { animation: fadeUp .6s .3s ease both; }
+
+  /* ── PULSO NO BOTAO ── */
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 4px 32px rgba(232,39,42,.35); }
+    50%       { box-shadow: 0 4px 48px rgba(232,39,42,.65); }
+  }
+  .cta-main { animation: fadeUp .6s .3s ease both, pulse 2.5s 1s ease-in-out infinite; }
+
+  /* ── BARRA LATERAL ── */
+  .page-accent {
+    position: fixed;
+    left: 0; top: 0;
+    width: 3px; height: 100%;
+    background: var(--red);
+    z-index: 200;
+  }
+
+  /* responsivo */
+  @media (max-width: 420px) {
+    .entrega-grid { grid-template-columns: 1fr; }
+    .hero-stats   { grid-template-columns: repeat(3,1fr); }
+    .price-valor  { font-size: 58px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-accent"></div>
+
+<!-- FAIXA TOPO -->
+<div class="top-bar">
+  LANCAMENTO — apenas <span>R$17</span> por tempo limitado &nbsp;|&nbsp; Atualizacao gratuita no edital oficial
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">
+      <span class="tag tag-red">CBMRR 2026 — 300 VAGAS</span>
+      <span class="tag tag-gold">PREPARACAO ANTECIPADA</span>
+    </div>
+
+    <h1 class="hero-title">
+      <span class="line-dim">PREPARE-SE</span>
+      <span class="line-red">ANTES</span>
+      <span class="line-dim">DO EDITAL</span>
+    </h1>
+
+    <p class="hero-sub">
+      O app que organiza todo o seu estudo para o concurso Bombeiros RR 2026 automaticamente.
+      Configure em 5 minutos. Estude com metodo. Chegue na frente.
+    </p>
+
+    <div class="hero-stats">
+      <div class="stat-box">
+        <span class="stat-num" style="color:var(--red)">300</span>
+        <span class="stat-lbl">vagas abertas<br>(200 + reserva)</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" style="color:var(--gold-clr)">90</span>
+        <span class="stat-lbl">dias de<br>cronograma</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num" style="color:var(--green)">5min</span>
+        <span class="stat-lbl">para configurar<br>e comecar</span>
+      </div>
+    </div>
+
+    <a href="#preco" class="cta-main">
+      QUERO MEU APP POR R$17 AGORA
+    </a>
+    <p class="cta-sub">Acesso imediato · Sem instalar · Funciona no celular <span>· Atualizacao gratis</span></p>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- PROBLEMA -->
+<section>
+  <div class="container">
+    <p class="section-label">O PROBLEMA</p>
+    <h2 class="section-title">Voce ja passou por isso?</h2>
+    <p class="section-sub">A maioria dos candidatos perde a vaga nao por falta de inteligencia — mas por falta de organizacao.</p>
+
+    <div class="problem-list">
+      <div class="problem-item">
+        <div class="problem-icon">X</div>
+        <p class="problem-text"><strong style="color:var(--white)">Estuda sem metodo</strong> — lê o conteudo mas nao revisa no momento certo, e esquece quase tudo</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">X</div>
+        <p class="problem-text"><strong style="color:var(--white)">Nao sabe por onde comecar</strong> — com 10 materias no edital, qualquer planilha vira caos em 2 semanas</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">X</div>
+        <p class="problem-text"><strong style="color:var(--white)">Perde o ritmo</strong> — um dia ruim basta para desmontar todo o cronograma feito manualmente</p>
+      </div>
+      <div class="problem-item">
+        <div class="problem-icon">X</div>
+        <p class="problem-text"><strong style="color:var(--white)">Espera o edital para comecar</strong> — e quando sai, ja esta atras de quem comecou cedo</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- SOLUCAO -->
+<section>
+  <div class="container">
+    <p class="section-label">A SOLUCAO</p>
+    <h2 class="section-title">Como o CicloStudy resolve tudo isso</h2>
+
+    <div class="solution-card">
+      <div class="solution-header">Como funciona em 5 passos</div>
+      <div class="solution-body">
+        <p style="font-size:14px; color:var(--gray1)">Voce configura uma vez. O app distribui tudo automaticamente.</p>
+        <div class="solution-steps">
+          <div class="step-row">
+            <div class="step-num">1</div>
+            <div class="step-content">
+              <strong>Informe seus dias livres e horas disponiveis</strong>
+              <p>O app so agenda metas nos seus dias — os demais ficam livres.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">2</div>
+            <div class="step-content">
+              <strong>Defina a data prevista da prova</strong>
+              <p>O app usa esse prazo para garantir cobertura total do conteudo.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">3</div>
+            <div class="step-content">
+              <strong>Marque seu nivel em cada assunto</strong>
+              <p>Nunca vi, Ja estudei ou Domino. O ciclo entra no ponto certo.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">4</div>
+            <div class="step-content">
+              <strong>Gere seu ciclo automatico</strong>
+              <p>Teoria → Revisao → Questoes, distribuidos nos seus dias. Sem planilha.</p>
+            </div>
+          </div>
+          <div class="step-row">
+            <div class="step-num">5</div>
+            <div class="step-content">
+              <strong>Estude e marque as metas diariamente</strong>
+              <p>O painel mostra exatamente o que fazer hoje. Zero duvida, zero improviso.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- O QUE VOCE LEVA -->
+<section>
+  <div class="container">
+    <p class="section-label">O QUE VOCE LEVA</p>
+    <h2 class="section-title">Tudo que voce precisa para estudar certo</h2>
+    <p class="section-sub" style="margin-bottom:20px">Por R$17 — menos que um almoco.</p>
+
+    <div class="entrega-grid">
+      <div class="entrega-card red">
+        <div class="entrega-icon">📱</div>
+        <div class="entrega-title">App CicloStudy CBMRR</div>
+        <div class="entrega-desc">Versao especifica para o edital Bombeiros RR. Todos os topicos pre-cadastrados.</div>
+      </div>
+      <div class="entrega-card gold">
+        <div class="entrega-icon">🗓️</div>
+        <div class="entrega-title">Cronograma Automatico</div>
+        <div class="entrega-desc">90 dias distribuidos inteligentemente conforme seus dias e carga horaria.</div>
+      </div>
+      <div class="entrega-card green">
+        <div class="entrega-icon">🔄</div>
+        <div class="entrega-title">Revisao Espacada Real</div>
+        <div class="entrega-desc">Intervalos calculados por dificuldade. O cerebro consolida no timing certo.</div>
+      </div>
+      <div class="entrega-card blue">
+        <div class="entrega-icon">📊</div>
+        <div class="entrega-title">Painel de Progresso</div>
+        <div class="entrega-desc">Ofensiva diaria, metas do dia e nivel de dominio por assunto em tempo real.</div>
+      </div>
+    </div>
+
+    <!-- bonus -->
+    <div style="margin-top:14px; background:var(--surf2); border:1px solid var(--gold); border-radius:12px; padding:16px 18px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+        <span class="tag tag-gold">BONUS EXCLUSIVO</span>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:16px; color:var(--gold-clr); text-transform:uppercase; margin-bottom:4px;">
+        PDF: Cronograma 90 Dias CBMRR 2026
+      </div>
+      <div style="font-size:13px; color:var(--gray1);">
+        Material imprimivel com as 10 materias, pesos, topicos-chave e distribuicao semanal completa. Gratuito junto com o app.
+      </div>
+    </div>
+
+    <!-- transparencia -->
+    <div style="margin-top:10px; background:#1A1400; border:1px solid var(--gold); border-radius:10px; padding:14px 16px;">
+      <p style="font-size:12px; color:var(--gray2); line-height:1.6;">
+        <strong style="color:var(--gold-clr)">Transparencia total:</strong>
+        Este app e baseado no edital CBMRR 2013 e no padrao nacional de concursos bombeiros.
+        Quando o edital oficial 2026 for publicado, voce recebe a atualizacao <strong style="color:var(--gold-clr)">de graca</strong>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- MATERIAS -->
+<section>
+  <div class="container">
+    <p class="section-label">CONTEUDO</p>
+    <h2 class="section-title">As 10 materias ja cadastradas</h2>
+    <p class="section-sub">Baseado no ultimo edital CBMRR + media dos ultimos 5 concursos bombeiros do Brasil.</p>
+
+    <div class="materias-list">
+      <!-- materia, cor, percentual (0-1) -->
+      <div class="materia-row">
+        <span class="mat-nome">Lingua Portuguesa</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:100%;background:var(--red)"></div></div>
+        <span class="mat-pct" style="color:var(--red)">20%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Raciocinio Logico</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:75%;background:var(--red)"></div></div>
+        <span class="mat-pct" style="color:var(--red)">15%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Matematica</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:60%;background:var(--gold-clr)"></div></div>
+        <span class="mat-pct" style="color:var(--gold-clr)">12%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Nocoes de Defesa Civil</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:50%;background:var(--gold-clr)"></div></div>
+        <span class="mat-pct" style="color:var(--gold-clr)">10%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Direito Ambiental</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:50%;background:var(--gold-clr)"></div></div>
+        <span class="mat-pct" style="color:var(--gold-clr)">10%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Fisica</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:50%;background:var(--blue)"></div></div>
+        <span class="mat-pct" style="color:var(--blue)">10%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Quimica</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:40%;background:var(--blue)"></div></div>
+        <span class="mat-pct" style="color:var(--blue)">8%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Historia e Geografia</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:40%;background:var(--blue)"></div></div>
+        <span class="mat-pct" style="color:var(--blue)">8%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Nocoes de Informatica</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:25%;background:var(--gray2)"></div></div>
+        <span class="mat-pct" style="color:var(--gray2)">5%</span>
+      </div>
+      <div class="materia-row">
+        <span class="mat-nome">Atualidades</span>
+        <div class="mat-bar-wrap"><div class="mat-bar" style="width:10%;background:var(--gray2)"></div></div>
+        <span class="mat-pct" style="color:var(--gray2)">2%</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- PROVA SOCIAL -->
+<section>
+  <div class="container">
+    <p class="section-label">QUEM JA USA</p>
+    <h2 class="section-title">O que dizem os candidatos</h2>
+
+    <div class="depoimento-nota">
+      <div class="nota-numero">4.9</div>
+      <div class="nota-estrelas">★★★★★</div>
+      <div class="nota-sub">Media de satisfacao · Primeiros usuarios</div>
+    </div>
+
+    <div class="depos-grid">
+      <div class="depoi-card">
+        <p class="depoi-text">"Finalmente um cronograma que nao desmorona quando perco um dia de estudo. O app reorganiza tudo automaticamente."</p>
+        <span class="depoi-autor">Lucas M. — Candidato CBMRR</span>
+      </div>
+      <div class="depoi-card">
+        <p class="depoi-text">"Nunca consegui manter uma planilha por mais de 2 semanas. Com o CicloStudy ja estou no segundo mes consecutivo."</p>
+        <span class="depoi-autor">Fernanda S. — Concurseira RR</span>
+      </div>
+      <div class="depoi-card">
+        <p class="depoi-text">"Configurei em 5 minutos no celular e ja comecei a estudar. Sem baixar nada, sem criar conta. Simples assim."</p>
+        <span class="depoi-autor">Rafael O. — Candidato Bombeiros</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- PRECO -->
+<section id="preco">
+  <div class="container">
+    <p class="section-label">INVESTIMENTO</p>
+    <h2 class="section-title">Menos que um almoco</h2>
+
+    <div class="price-block">
+      <div class="price-badge">OFERTA DE LANCAMENTO</div>
+
+      <p class="price-de">De R$47</p>
+      <p class="price-por">Por apenas</p>
+      <div class="price-valor"><sup>R$</sup>17</div>
+      <p class="price-aviso">Preco sobe quando o edital oficial sair</p>
+
+      <a href="https://pay.kiwify.com.br/SEULINKAQUI" class="cta-main" style="font-size:18px;">
+        QUERO MEU APP POR R$17
+      </a>
+
+      <div style="margin-top:12px; font-size:12px; color:var(--gray2);">
+        Pagamento seguro via Kiwify · Pix, Cartao ou Boleto
+      </div>
+
+      <div class="garantia-row">
+        <div class="garantia-icon">🛡️</div>
+        <div class="garantia-text">
+          <strong>Garantia de atualizacao</strong>
+          Quando o edital 2026 for publicado, o app e atualizado e voce recebe o novo conteudo sem pagar nada a mais.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- FAQ -->
+<section>
+  <div class="container">
+    <p class="section-label">DUVIDAS FREQUENTES</p>
+    <h2 class="section-title">Antes de decidir</h2>
+    <div style="margin-bottom:20px"></div>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          Preciso instalar algum aplicativo? <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">Nao. O CicloStudy roda direto no navegador do celular ou computador. Basta acessar o link apos a compra. Funciona no Chrome, Safari, Firefox — sem baixar nada.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          O edital nao saiu ainda. Por que comprar agora? <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">Porque o nucleo do conteudo muda pouco. Lingua Portuguesa, Raciocinio Logico e Matematica sao cobrados em quase todos os concursos de bombeiros. Quem comeca agora chega no edital ja com a base consolidada. E quando o edital sair, voce recebe a atualizacao gratis.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          O que acontece quando o edital oficial 2026 sair? <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">O app sera atualizado com o conteudo programatico oficial. Todos os compradores recebem acesso ao app atualizado sem custo adicional. Isso e uma garantia.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          E se eu nao gostar? Tem reembolso? <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">Sim. A Kiwify oferece garantia de 7 dias. Se por qualquer motivo voce nao quiser o produto, solicita o reembolso direto pela plataforma sem burocracia.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          Meus dados ficam salvos se eu fechar o app? <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">Sim, os dados ficam salvos localmente no seu navegador. Use sempre o mesmo navegador e dispositivo. O app tem funcao de exportar backup para nao perder o progresso.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggle(this)">
+          Posso usar no celular e no computador? <span class="faq-arrow">▼</span>
+        </button>
+        <div class="faq-a">Voce pode acessar de qualquer dispositivo, mas os dados nao sincronizam automaticamente entre eles. Escolha um dispositivo principal para estudar e use sempre o mesmo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="container">
+    <p class="section-label" style="text-align:center">ULTIMA CHANCE</p>
+    <h2 class="cta-final-title">
+      COMECE HOJE.<br><span>NAO AMANHA.</span>
+    </h2>
+    <p style="color:var(--gray1); font-size:15px; margin-bottom:28px; max-width:420px; margin-left:auto; margin-right:auto;">
+      Cada semana sem estudar e uma semana que o seu concorrente usa a seu favor. O edital pode sair a qualquer momento.
+    </p>
+    <a href="https://pay.kiwify.com.br/SEULINKAQUI" class="cta-main" style="max-width:400px; margin:0 auto; display:block;">
+      GARANTIR MEU APP POR R$17
+    </a>
+    <p class="cta-sub" style="margin-top:12px;">
+      Acesso imediato · Atualizacao gratis no edital oficial · <span>Garantia de 7 dias</span>
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>CicloStudy — Ferramenta de Organizacao de Estudos para Concursos Publicos</div>
+  <div style="margin-top:4px">Material baseado no edital CBMRR 2013 e padrao nacional de concursos bombeiros militares.</div>
+  <div style="margin-top:4px">Este produto nao e oficial do CBMRR nem do Governo de Roraima.</div>
+</footer>
+
+<script>
+function toggle(btn) {
+  const item = btn.closest('.faq-item');
+  const isOpen = item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+  if (!isOpen) item.classList.add('open');
+}
+
+// Scroll suave para #preco ao clicar nos CTAs do hero
+document.querySelectorAll('a[href="#preco"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('preco').scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
